@@ -15,6 +15,7 @@ const twitterClient = new twit(twitterConfig);
 // OpenSea doesn't give us access to Webhooks; need to poll every 60 seconds
 // Occasionaly in the split second of delay, dupelicates are retrieved - filter them out here
 async function handleDupesAndTweet(tokenName, tweetText, imageUrl) {
+    return tweet(tweetText);
     // Search our twitter account's recent tweets for anything exactly matching our new tweet's text
     twitterClient.get('search/tweets', { q: tokenName, count: 1, result_type: 'recent' }, (error, data, response) => {
         if (!error) {
