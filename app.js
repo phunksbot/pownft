@@ -6,7 +6,6 @@ const tweet = require('./tweet');
 
 function formatAndSendTweet(event) {
     const tokenName = _.get(event, ['asset', 'name']);
-    const image = _.get(event, ['asset', 'image_url']);
     const openseaLink = _.get(event, ['asset', 'permalink']);
     const totalPrice = _.get(event, 'total_price');
     const usdValue = _.get(event, ['payment_token', 'usd_price']);
