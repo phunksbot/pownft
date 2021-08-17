@@ -41,6 +41,6 @@ setInterval(() => {
             return formatAndSendTweet(event);
         });
     }).catch((error) => {
-        console.error(error);
+        console.log(error);
     });
 }, 60000);
