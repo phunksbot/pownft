@@ -14,7 +14,7 @@ function formatAndSendTweet(event) {
     const formattedEthPrice = ethers.utils.formatEther(totalPrice.toString());
     const formattedUsdPrice = (formattedEthPrice * usdValue).toFixed(2);
 
-    const tweetText = `Atom ⚛️ ${tokenName} was purchased for Ξ${formattedEthPrice} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #nfts #ethereum`;
+    const tweetText = `Atom ⚛️ ${tokenName} was purchased for Ξ${formattedEthPrice} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #ethereum #nfts`;
 
     console.log(tweetText);
 
@@ -24,7 +24,7 @@ function formatAndSendTweet(event) {
 // Poll OpenSea every minute & retrieve all sales for a given collection in the last minute
 // Then pass those events over to the formatter before tweeting
 setInterval(() => {
-    const lastMinute = moment().startOf('minute').subtract(599, "seconds").unix() * 1000;
+    const lastMinute = moment().startOf('minute').subtract(59, "seconds").unix() * 1000;
 
     axios.get('https://api.opensea.io/api/v1/events', {
         params: {
@@ -42,7 +42,6 @@ setInterval(() => {
             return formatAndSendTweet(event);
         });
     }).catch((error) => {
-        console.error("SetIntervalError");
         console.error(error);
     });
-}, 300000);
+}, 60000);
