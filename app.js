@@ -6,24 +6,32 @@ const tweet = require('./tweet');
 
 function formatAndSendTweet(event) {
     const tokenName = _.get(event, ['asset', 'name']);
+    const image = _.get(event, ['asset', 'image_url']);
     const openseaLink = _.get(event, ['asset', 'permalink']);
     const totalPrice = _.get(event, 'total_price');
     const usdValue = _.get(event, ['payment_token', 'usd_price']);
+    const tokenSymbol = _.get(event, ['payment_token', 'symbol']);
+    const hashtag = process.env.HASHTAG;
 
-    const formattedEthPrice = ethers.utils.formatEther(totalPrice.toString());
-    const formattedUsdPrice = (formattedEthPrice * usdValue).toFixed(2);
+    const formattedTokenPrice = ethers.utils.formatEther(totalPrice.toString());
+    const formattedUsdPrice = (formattedTokenPrice * usdValue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const formattedPriceSymbol = (
+        (tokenSymbol === 'WETH' || tokenSymbol === 'ETH') 
+            ? 'Ξ' 
+            : ` ${tokenSymbol}`
+    );
 
-    const tweetText = `Atom ⚛️ ${tokenName} was purchased for Ξ${formattedEthPrice} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #ethereum #nfts`;
+    const tweetText = `Atom ⚛️ ${tokenName} was purchased for Ξ${formattedEthPrice} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #ethereum #nfts ${hashtag}`;
 
     console.log(tweetText);
 
-    return tweet.handleDupesAndTweet(tokenName, tweetText);
+    return tweet.handleDupesAndTweet(tokenName, tweetText, image);
 }
 
 // Poll OpenSea every minute & retrieve all sales for a given collection in the last minute
 // Then pass those events over to the formatter before tweeting
 setInterval(() => {
-    const lastMinute = moment().startOf('minute').subtract(59, "seconds").unix() * 1000;
+    const lastMinute = moment().startOf('minute').subtract(5, "minutes").unix();
 
     axios.get('https://api.opensea.io/api/v1/events', {
         params: {
@@ -35,7 +43,7 @@ setInterval(() => {
     }).then((response) => {
         const events = _.get(response, ['data', 'asset_events']);
 
-        console.log(`${events.length} sales in the last minute...`);
+        console.log(`${events.length} sales in the last 5 minutes...`);
 
         _.each(events, (event) => {
             return formatAndSendTweet(event);
