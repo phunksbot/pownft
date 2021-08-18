@@ -40,7 +40,8 @@ async function handleDupesAndTweet(tokenName, tweetText) {
             console.error('Tweet is a duplicate; possible delayed transaction retrieved from OpenSea');
         } else {
             console.error(err);
-        }
+        });
+        
 module.exports = {
     handleDupesAndTweet: handleDupesAndTweet
 };
