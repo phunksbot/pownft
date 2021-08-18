@@ -41,8 +41,6 @@ async function handleDupesAndTweet(tokenName, tweetText) {
         } else {
             console.error(err);
         }
-    });
-}
 module.exports = {
     handleDupesAndTweet: handleDupesAndTweet
 };
