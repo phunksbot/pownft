@@ -24,7 +24,7 @@ async function handleDupesAndTweet(tokenName, tweetText) {
             if (_.isEmpty(data) || _.isEmpty(statuses)) {
                 console.log('No duplicate statuses found, continuing to tweet...');
 
-                return tweet(tweetText, imageUrl);
+                return tweet(tweetText);
             }
 
             const mostRecentMatchingTweetCreatedAt = _.get(statuses[0], 'created_at');
