@@ -43,12 +43,6 @@ async function handleDupesAndTweet(tokenName, tweetText) {
         }
     });
 }
-
-// Format a provided URL into it's base64 representation
-function getBase64(url) {
-    return axios.get(url, { responseType: 'arraybuffer'}).then(response => Buffer.from(response.data, 'binary').toString('base64'))
-}
-
 module.exports = {
     handleDupesAndTweet: handleDupesAndTweet
 };
