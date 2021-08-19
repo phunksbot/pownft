@@ -61,11 +61,11 @@ async function tweet(tweetText, imageUrl) {
                 if (!error) {
                     console.log(`Successfully tweeted: ${tweetText}`);
                 } else {
-                    console.error(error);
+                    console.error(exception);
                 }
             });
         } else {
-            console.error(error);
+            console.error(exception);
         }
     });
 }
