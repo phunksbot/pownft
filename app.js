@@ -11,17 +11,16 @@ function formatAndSendTweet(event) {
     const totalPrice = _.get(event, 'total_price');
     const usdValue = _.get(event, ['payment_token', 'usd_price']);
     const tokenSymbol = _.get(event, ['payment_token', 'symbol']);
-    const hashtag = process.env.HASHTAG;
 
     const formattedTokenPrice = ethers.utils.formatEther(totalPrice.toString());
-    const formattedUsdPrice = (formattedTokenPrice * usdValue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const formattedUsdPrice = (formattedTokenPrice * usdValue).toFixed(2);
     const formattedPriceSymbol = (
         (tokenSymbol === 'WETH' || tokenSymbol === 'ETH') 
             ? 'Ξ' 
             : ` ${tokenSymbol}`
     );
 
-    const tweetText = `Atom ⚛️ ${tokenName} was purchased for ${formattedTokenPrice}${formattedPriceSymbol} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #ethereum #nfts`;
+    const tweetText = `Atom ⚛️ ${tokenName} was purchased for ${formattedTokenPrice}${formattedPriceSymbol} ($${formattedUsdPrice})\n #pownft #ethereum #nfts \n ${openseaLink}`;
 
     console.log(tweetText);
 
@@ -31,8 +30,9 @@ function formatAndSendTweet(event) {
 // Poll OpenSea every minute & retrieve all sales for a given collection in the last minute
 // Then pass those events over to the formatter before tweeting
 setInterval(() => {
+    //Retrieve data from last 10 minutes
     const lastMinute = moment().startOf('minute').subtract(59, "seconds").unix() * 1000;
-
+    
     axios.get('https://api.opensea.io/api/v1/events', {
         params: {
             collection_slug: process.env.OPENSEA_COLLECTION_SLUG,
@@ -49,6 +49,7 @@ setInterval(() => {
             return formatAndSendTweet(event);
         });
     }).catch((error) => {
+        console.error("SetIntervalError");
         console.error(error);
     });
-}, 60000);
+}, 60000); //Poll every 1 minutes
