@@ -20,7 +20,7 @@ function formatAndSendTweet(event) {
             : ` ${tokenSymbol}`
     );
 
-    const tweetText = `Atom ⚛️ ${tokenName} was purchased for ${formattedTokenPrice}${formattedPriceSymbol} ($${formattedUsdPrice})\n ${openseaLink}\n #pownft #ethereum #nfts`;
+    const tweetText = `Atom ⚛️ ${tokenName} was purchased for ${formattedTokenPrice}${formattedPriceSymbol} ($${formattedUsdPrice}) \n ${openseaLink} \n #pownft #ethereum #nfts`;
 
     console.log(tweetText);
 
