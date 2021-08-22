@@ -31,7 +31,7 @@ function formatAndSendTweet(event) {
 // Then pass those events over to the formatter before tweeting
 setInterval(() => {
     //Retrieve data from last 10 minutes
-    const lastMinute = moment().startOf('minute').subtract(59, "seconds").unix() * 1000;
+    const lastMinute = moment().startOf('minute').subtract(599, "seconds").unix() * 1000;
     
     axios.get('https://api.opensea.io/api/v1/events', {
         params: {
@@ -52,4 +52,4 @@ setInterval(() => {
         console.error("SetIntervalError");
         console.error(error);
     });
-}, 60000); //Poll every 1 minutes
+}, 300000); //Poll every 1 minutes
